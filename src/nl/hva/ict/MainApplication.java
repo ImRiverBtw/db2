@@ -14,7 +14,6 @@ import nl.hva.ict.data.MySQL.*;
 /**
  * Main class met applicatie logica
  * @author HBO-ICT
- * test want vgm heb ik de git verpest
  */
 public class MainApplication extends Application {
 
