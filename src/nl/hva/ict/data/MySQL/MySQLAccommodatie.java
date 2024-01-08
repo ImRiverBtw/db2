@@ -33,7 +33,7 @@ public class MySQLAccommodatie extends MySQL<Accommodatie> {
     private void load() {
 
         // Vul hier je SQL code in
-        String sql = "";
+        String sql = "SELECT * FROM accommodatie";
 
         // Als je nog geen query hebt ingevuld breek dan af om een error te voorkomen.
         if (sql.equals(""))

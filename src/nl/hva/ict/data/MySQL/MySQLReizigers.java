@@ -49,7 +49,7 @@ public class MySQLReizigers extends MySQL<Reiziger> {
 
             // Loop net zolang als er records zijn
             while (rs.next()) {
-                String reizigersCode = rs.getString("reiziger-code");
+                String reizigersCode = rs.getString("reiziger_code");
                 String voornaam = rs.getString("voornaam");
                 String achternaam = rs.getString("achternaam");
                 String adres = rs.getString("adres");
