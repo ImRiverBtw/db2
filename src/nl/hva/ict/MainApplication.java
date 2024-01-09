@@ -25,9 +25,9 @@ public class MainApplication extends Application {
     private static final String MYSQL_PASSWORD = "root"; // vul hier je DB wachtwoord in
 
     //Mongo NoSQL
-    private static final String NOSQL_HOST = ""; // Vul hier je MongoDB gegevens in. Iets met mongodb+srv://......
-    private static final String NOSQL_DATABASE = ""; // Vul hier je database gegevens in;
-    
+    private static final String NOSQL_HOST = "mongodb+srv://admin:root@cluster0.plyccdq.mongodb.net/?retryWrites=true&w=majority"; // Vul hier je MongoDB gegevens in. Iets met mongodb+srv://......
+    private static final String NOSQL_DATABASE = "big_five_safari"; // Vul hier je database gegevens in;
+
     //Data models
     private static final MySQLReizigers mySQLReizigers = new MySQLReizigers();
     private static final MySQLLodge mySQLLodge = new MySQLLodge();
