@@ -39,13 +39,14 @@ public class MySQLBoekingsOverzicht extends MySQL<BoekingsOverzicht> {
     private void load() {
 
         // Vul hier je SQL code in
-        String sql = "SELECT \n" +
-                "    r.*, \n" +
-                "    a.naam AS naam, a.stad AS stad, a.land AS land, \n" +
-                "    concat(re.voornaam, \" \", re.achternaam) AS reiziger, re.plaats AS reiziger_plaats\n" +
-                "FROM Reservering r\n" +
-                "JOIN Accommodatie a ON r.Accommodatie_accommodatie_code = a.accommodatie_code\n" +
-                "JOIN Reiziger re ON r.Reiziger_reiziger_code = re.reiziger_code;";
+//        String sql = "SELECT \n" +
+//                "    r.*, \n" +
+//                "    a.naam AS naam, a.stad AS stad, a.land AS land, \n" +
+//                "    concat(re.voornaam, \" \", re.achternaam) AS reiziger, re.plaats AS reiziger_plaats\n" +
+//                "FROM Reservering r\n" +
+//                "JOIN Accommodatie a ON r.Accommodatie_accommodatie_code = a.accommodatie_code\n" +
+//                "JOIN Reiziger re ON r.Reiziger_reiziger_code = re.reiziger_code;";
+        String sql = "SELECT  * FROM Boekingsoverzicht";
 
         // Als je nog geen query hebt ingevuld breek dan af om een error te voorkomen.
         if (sql.equals(""))
@@ -65,8 +66,8 @@ public class MySQLBoekingsOverzicht extends MySQL<BoekingsOverzicht> {
                 Date vertrekDatum = rs.getDate("vertrek_datum");
                 int betaaldIntValue = rs.getInt("heeft_betaald");
                 boolean betaald = betaaldIntValue != 0;
-                String accommodatieCode = rs.getString("Accommodatie_accommodatie_code");
-                String reizerCode = rs.getString("Reiziger_reiziger_code");
+                String accommodatieCode = rs.getString("accommodatie_code");
+                String reizerCode = rs.getString("reiziger_code");
                 String voornaam = ""; // not in use
                 String achternaam = rs.getString("reiziger"); // combine voor en achternaam
                 String adres = ""; // not in use
