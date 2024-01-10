@@ -33,12 +33,14 @@ public abstract class MongoDB implements Data {
         // Heb je geen gegevens in de MainApplication staan slaat hij het maken van de verbinding over
         if (MainApplication.getNosqlHost().equals(""))
             return;
-
+        System.out.println(MainApplication.getNosqlHost());
+        System.out.println(MainApplication.getNosqlDatabase());
         // Verbind alleen als er nog geen actieve verbinding is.
         if (this.mongoClient == null) {
             try {
                 // Open pijpleiding
                 this.mongoClient = MongoClients.create(MainApplication.getNosqlHost());
+                System.out.println(this.mongoClient);
                 // Selecteer de juiste database
                 this.mongoDatabase = mongoClient.getDatabase(MainApplication.getNosqlDatabase());
             } catch (MongoException e) {

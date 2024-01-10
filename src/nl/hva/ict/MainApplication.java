@@ -44,6 +44,8 @@ public class MainApplication extends Application {
         mainController.getBorderPane().setCenter(pane);
     }
 
+    public static MongoReizigers mongoReizigers = new MongoReizigers();
+
     public static String getMysqlHost() {
         return MYSQL_HOST;
     }

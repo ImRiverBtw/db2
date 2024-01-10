@@ -1,5 +1,6 @@
 package nl.hva.ict.controllers;
 
+import com.mongodb.client.MongoCollection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import nl.hva.ict.MainApplication;
@@ -15,6 +16,7 @@ public class ReizigerController extends Controller {
 
     private final ReizigersView reizigersView;
 
+
     public ReizigerController() {
         reizigersView = new ReizigersView();
         reizigersView.getReizigersViewListView().getSelectionModel().selectedItemProperty()
@@ -25,6 +27,7 @@ public class ReizigerController extends Controller {
         reizigersView.getBtUpdateData().setOnAction(e -> refreshData());
         reizigersView.getBtNew().setOnAction(e -> insert());
         reizigersView.getBtDelete().setOnAction(e -> delete());
+
         loadData();
     }
 
@@ -34,14 +37,13 @@ public class ReizigerController extends Controller {
 
         // voor NOSQL
         ObservableList<Reiziger> reizigers = FXCollections.observableArrayList(MainApplication.getMongoDBReizigers().getAll());
-
         reizigersView.getReizigersViewListView().setItems(reizigers);
         reizigersView.getComboReistSamenMet().getSelectionModel().select(null);
     }
 
 
     private void refreshData() {
-        MainApplication.getMySQLReizigers().reload();
+        loadData();
     }
 
     private void save() {
