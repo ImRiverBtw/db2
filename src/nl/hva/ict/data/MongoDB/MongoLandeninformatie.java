@@ -7,8 +7,12 @@ import org.bson.conversions.Bson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.mongodb.client.model.Aggregates.group;
 import static com.mongodb.client.model.Aggregates.match;
+import static com.mongodb.client.model.Accumulators.sum;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.regex;
 
 
 /**
@@ -89,8 +93,15 @@ public class MongoLandeninformatie extends MongoDB {
         // Aggregation functie in Mongo
         Bson match = match(eq("languages.name", taal));
 
-        List<Document> results = collection.aggregate(Arrays.asList(match))
-                .into(new ArrayList<>());
+        List<Document> results;
+        if(alleenAfrika){
+            Bson afrikaMatch = match(eq("region", "Africa"));
+            results = collection.aggregate(Arrays.asList(match, afrikaMatch))
+                    .into(new ArrayList<>());
+        } else {
+            results = collection.aggregate(Arrays.asList(match))
+                    .into(new ArrayList<>());
+        }
 
         // Maak models en voeg resultaat toe aan arraylist
         for (Document land : results) {
@@ -106,6 +117,34 @@ public class MongoLandeninformatie extends MongoDB {
      * @param alleenAfrika filter het resultaat zodat wel of niet alleen afrikaanse landen terug komen
      */
     public void waarBetaalJeMet(String valuta, boolean alleenAfrika) {
+        // Als je geen NoSQL server hebt opgegeven gaat de methode niet verder anders zou je een nullpointer krijgen
+        if (MainApplication.getNosqlHost().equals(""))
+            return;
+
+        // reset arraylist
+        this.landen.clear();
+
+        // selecteer collection
+        this.selectedCollection("landen");
+
+        // Aggregation functie in Mongo
+        Bson match = match(eq("currencies.name", valuta));
+
+        List<Document> results;
+        if(alleenAfrika){
+            Bson afrikaMatch = match(eq("region", "Africa"));
+            results = collection.aggregate(Arrays.asList(match, afrikaMatch))
+                    .into(new ArrayList<>());
+        } else {
+            results = collection.aggregate(Arrays.asList(match))
+                    .into(new ArrayList<>());
+        }
+
+        // Maak models en voeg resultaat toe aan arraylist
+        for (Document land : results) {
+            this.landen.add(new Landen(land.get("name").toString(), land.get("capital").toString()));
+
+        }
     }
 
     /**
@@ -115,16 +154,51 @@ public class MongoLandeninformatie extends MongoDB {
      * @param werelddeel Welke valuta wil je weten
      */
     public void welkeLandenZijnErIn(String werelddeel) {
+        // Als je geen NoSQL server hebt opgegeven gaat de methode niet verder anders zou je een nullpointer krijgen
+        if (MainApplication.getNosqlHost().equals(""))
+            return;
+
+        // reset arraylist
+        this.landen.clear();
+
+        // selecteer collection
+        this.selectedCollection("landen");
+
+        // Aggregation functie in Mongo
+        Bson match = match(regex("subregion", werelddeel));
+        List<Document> results = collection.aggregate(Arrays.asList(match))
+                .into(new ArrayList<>());
+
+        // Maak models en voeg resultaat toe aan arraylist
+        for (Document land : results) {
+            this.landen.add(new Landen(land.get("name").toString(), land.get("capital").toString()));
+        }
     }
 
     /**
      * Hoeveel inwoners heeft Oost-Afrika?. Haal deze informatie uit de database en gebruik hiervoor aggregation.
      */
     public int hoeveelInwonersOostAfrika() {
+        // Als je geen NoSQL server hebt opgegeven gaat de methode niet verder anders zou je een nullpointer krijgen
+        if (MainApplication.getNosqlHost().equals(""))
+            return 0;
+
         // reset arraylist
         this.landen.clear();
 
-        // Om geen compile error te krijgen wordt tijdelijk 0 teruggegeven.
+        // selecteer collection
+        this.selectedCollection("landen");
+
+        // Aggregation functie in Mongo
+        Bson matchEastAfrica = match(eq("subregion", "Eastern Africa"));
+        Bson countInwoners= group(null, sum("totalPopulation", "$population"));
+
+        List<Document> results = collection.aggregate(Arrays.asList(matchEastAfrica, countInwoners))
+                .into(new ArrayList<>());
+        if (!results.isEmpty()) {
+            Document eastAfricaResult = results.get(0);
+                return eastAfricaResult.getInteger("totalPopulation", 0);
+            }
         return 0;
     }
 }
