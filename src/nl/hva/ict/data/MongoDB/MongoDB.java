@@ -15,7 +15,7 @@ import org.bson.Document;
  */
 public abstract class MongoDB implements Data {
 
-    protected MongoCollection<Document> collection;
+    public MongoCollection<Document> collection;
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
 

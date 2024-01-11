@@ -1,7 +1,9 @@
 package nl.hva.ict.data.MongoDB;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.MongoCursor;
 import nl.hva.ict.MainApplication;
+import nl.hva.ict.controllers.ReizigerController;
 import nl.hva.ict.models.Reiziger;
 import org.bson.Document;
 import java.util.ArrayList;
@@ -49,10 +51,9 @@ public class MongoReizigers extends MongoDB {
      * Voeg een object toe aan de arraylist. Niet gebruikt in deze class maar door de interface data wel verplicht
      */
     @Override
-    public void add(Object object) {
+    public void add(Object reiziger) {
 
     }
-
 
     /**
      * Update een object toe aan de arraylist. Niet gebruikt in deze class maar door de interface data wel verplicht
